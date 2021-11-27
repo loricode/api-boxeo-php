@@ -13,12 +13,17 @@
        $response = $competitor->getUser($data);
        echo json_encode($response);
        break;
-       case 'PUT':
+       case 'POST':
          // echo json_encode($method);
-         $data = json_decode(file_get_contents('php://input'), true);
-         
+         $data = json_decode(file_get_contents('php://input'), true);   
          $competitor = new CompetitiorController();
          //echo json_encode($data['firstName']);
+         $response = $competitor->createUser($data);
+         echo json_encode($response);
+         break;
+       case 'PUT':
+         $data = json_decode(file_get_contents('php://input'), true);
+         $competitor = new CompetitiorController();
          $response = $competitor->updateUser($data);
          echo json_encode($response);
          break;   

@@ -47,6 +47,52 @@ public function getUser($data){
       return $list[0];
   }
 
+  public function createUser($data){
+   $first = $data['nombre'];
+   $last = $data['apellido'];
+   $weight = $data['peso'];
+   $email = $data['email'];
+   $password = $data['contrasena'];
+   $imagen = $data['imagen'];
+   $age = $data['edad'];
+   $phone = $data['telefono'];
+   $conexion = new Conexion();
+   $db  = $conexion->getConexion();
+   $sql = "INSERT INTO users (first_name, last_name, phone, email, password) VALUES (:first, :last, :phone, :email, :password)";
+   $statement = $db->prepare($sql);
+   $statement->bindParam(':first',  $first);
+   $statement->bindParam(':last',  $last);
+   $statement->bindParam(':phone', $phone );
+   $statement->bindParam(':email', $email);
+   $statement->bindParam(':password',  $password);
+   $statement->execute();
+
+   $sql = "INSERT INTO competitors (first_name, last_name, age, weight, image, email) VALUES (:first, :last, :age, :weight, :image, :email)";
+   $statement = $db->prepare($sql);
+   $statement->bindParam(':first',  $first);
+   $statement->bindParam(':last',  $last);
+   $statement->bindParam(':age', $age); 
+   $statement->bindParam(':weight',  $weight);
+   $statement->bindParam(':image',  $imagen);
+   $statement->bindParam(':email', $email);
+   $statement->execute();
+   $resultData = $statement->fetch();
+
+   if($resultData){
+     return [
+        "status" => 400,
+        "data"=> $resultData,
+        "message" => "it was not inserted in the table" ];  
+   }else{
+      //puede hacer un token en esta parte
+      return ["status" => 200, 
+             "data"=> [],
+             "message" => "added sucessfully"
+        ];
+     } 
+ }
+
+
 
 public function updateUser($data){
    $aux = $data;
